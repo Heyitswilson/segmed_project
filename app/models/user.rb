@@ -8,7 +8,14 @@ class User < ApplicationRecord
 
     after_initialize :ensure_session_token
 
-    # write associations
+    has_many(
+        :favorites,
+        class_name: "Favorite",
+        foreign_key: :user_id,
+        primary_key: :id
+    )
+
+    has_many :favorite_photos, through: :favorites, source: :photo
 
     # find user on login
     def self.find_by_credentials(email, password)
