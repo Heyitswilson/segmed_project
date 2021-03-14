@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Row, Container, Button, Form } from 'react-bootstrap';
+import { Row, Container, Button } from 'react-bootstrap';
 import PhotoContainer from '../photo/photo_container';
 
 const Photos = (props) => {
