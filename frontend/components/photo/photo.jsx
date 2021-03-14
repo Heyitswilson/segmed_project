@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Row, Col, Container, Button, Form, Image } from 'react-bootstrap';
+import { debounce } from "lodash";
 
 const Photo = (props) => {
     // state
     const [favorite, setFavorite] = useState(false);
     useEffect(() => {
-        // favorite status that is checked and set in the Photos component
+        // favorite status that is checked and set in the Photos component. 
+        // used to decide what the "favorite" button does
         if (photo.favorite) setFavorite(true);
     }, [])
 
-    // photo passed from Photos component
     let photo = props.photo;
     // object linking a photo to a user
     let favoriteAssociation = props.favorites[photo.id];
 
-    const handleClick = (e) => {
-        e.preventDefault();
+    const performAction = () => {
         if (favorite) {
             props.deleteFavorite(favoriteAssociation.id, photo.id);
             photo.favorite = false;
@@ -24,8 +24,11 @@ const Photo = (props) => {
             props.createFavorite({photo_id: photo.id, user_id: props.user});
             photo.favorite = true;
             setFavorite(true);
-        }
-    }
+        };
+    };
+
+    // debounce to prevent duplicate records from being created and prevent unneccesary strain on server
+    const debounceClick = useCallback(debounce(performAction, 400), [favorite]); 
 
     // decides button color
     let variantType = favorite ? "danger" : "secondary"; 
@@ -38,7 +41,7 @@ const Photo = (props) => {
             </Row>
             <Row className="pt-1">
                 <Col className="d-flex justify-content-center">
-                    <Button onClick={(e) => handleClick(e)} variant={variantType}>Favorite</Button>
+                    <Button onClick={() => debounceClick()} variant={variantType}>Favorite</Button>
                 </Col>
             </Row>
         </Container>

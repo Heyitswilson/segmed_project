@@ -1,7 +1,6 @@
 import { RECEIVE_CURRENT_USER } from '../actions/session_actions';
 import { LOGOUT_CURRENT_USER } from '../actions/session_actions';
 
-// track user state
 const usersReducer = (state={}, action) => {
     Object.freeze();
 

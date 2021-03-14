@@ -1,4 +1,4 @@
-// routes used to connect with the Rails routes
+// ajax connects to the backend routes
 
 export const signup = (user) => (
     $.ajax({

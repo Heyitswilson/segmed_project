@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Row, Col, Container, Button, Form } from 'react-bootstrap';
+import { Row, Container, Button, Form } from 'react-bootstrap';
 import PhotoContainer from '../photo/photo_container';
 
 const Photos = (props) => {
@@ -19,7 +19,6 @@ const Photos = (props) => {
     const handleLogout = (e) => {
         e.preventDefault();
         props.logout();
-        // history.push('/login');
     }
 
     const isFavorite = (photoID) => {
@@ -33,7 +32,7 @@ const Photos = (props) => {
         let photoArray = Object.values(photoObject);
         return (photoArray.map(photo => {
             if (isFavorite(photo.id)) {
-                // mark favorite status so that a flag can be set in the Photo component
+                // mark favorite status so that a flag (button color) can be set in the Photo component
                 photo.favorite = true;
             }
             return (
