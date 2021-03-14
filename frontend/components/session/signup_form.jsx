@@ -41,7 +41,7 @@ const SignupForm = (props) => {
             <Row>
                 <Col>
                     <Row>
-                        <Col className="d-flex justify-content-center">Sign up</Col>
+                        <Col className="d-flex justify-content-center">Create Account</Col>
                     </Row>
                     <Row className="d-flex justify-content-center">
                         <Form onSubmit={handleSubmit}>

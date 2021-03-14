@@ -45,10 +45,10 @@ const Photos = (props) => {
     }
 
     return (
-        <Container>
+        <Container className="p-2">
             <ReturnPhotos/>
             <Row className="d-flex justify-content-center">
-                <Button onClick={(e) => handleLogout(e)}>Logout</Button>
+                <Button onClick={(e) => handleLogout(e)}>Log Out</Button>
             </Row>
         </Container>
     )

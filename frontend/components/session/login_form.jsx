@@ -41,7 +41,7 @@ const LoginForm = (props) => {
             <Row>
                 <Col>
                     <Row>
-                        <Col className="d-flex justify-content-center">Login</Col>
+                        <Col className="d-flex justify-content-center">Log In</Col>
                     </Row>
                     <Row className="d-flex justify-content-center">
                         <Form onSubmit={handleSubmit}>
@@ -66,7 +66,7 @@ const LoginForm = (props) => {
                             <Row>
                                 <Col className="d-flex justify-content-start">
                                     <Button variant="primary" type="submit">
-                                        Login
+                                        Log In
                                     </Button>
                                 </Col>
                                 <Col className="d-flex justify-content-end">
@@ -77,7 +77,7 @@ const LoginForm = (props) => {
                             </Row>
                             <Row >
                                 <Col className="d-flex justify-content-center">
-                                    <Link to="/signup">To Signup</Link>
+                                    <Link to="/signup">Create Account</Link>
                                 </Col>
                             </Row>
                         </Form>

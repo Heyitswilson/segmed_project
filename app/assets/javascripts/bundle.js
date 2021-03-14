@@ -540,13 +540,15 @@ var Photos = function Photos(props) {
     });
   };
 
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ReturnPhotos, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__.default, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__.default, {
+    className: "p-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ReturnPhotos, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__.default, {
     className: "d-flex justify-content-center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__.default, {
     onClick: function onClick(e) {
       return handleLogout(e);
     }
-  }, "Logout")));
+  }, "Log Out")));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Photos);
@@ -720,7 +722,7 @@ var LoginForm = function LoginForm(props) {
     className: "d-flex justify-content-center align-items-center session"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__.default, {
     className: "d-flex justify-content-center"
-  }, "Login")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__.default, {
+  }, "Log In")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__.default, {
     className: "d-flex justify-content-center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__.default, {
     onSubmit: handleSubmit
@@ -745,7 +747,7 @@ var LoginForm = function LoginForm(props) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__.default, {
     variant: "primary",
     type: "submit"
-  }, "Login")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__.default, {
+  }, "Log In")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__.default, {
     className: "d-flex justify-content-end"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__.default, {
     onClick: function onClick(e) {
@@ -757,7 +759,7 @@ var LoginForm = function LoginForm(props) {
     className: "d-flex justify-content-center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Link, {
     to: "/signup"
-  }, "To Signup"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RenderErrors, null))));
+  }, "Create Account"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RenderErrors, null))));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (LoginForm);
@@ -889,7 +891,7 @@ var SignupForm = function SignupForm(props) {
     className: "d-flex justify-content-center align-items-center session"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__.default, {
     className: "d-flex justify-content-center"
-  }, "Sign up")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__.default, {
+  }, "Create Account")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__.default, {
     className: "d-flex justify-content-center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__.default, {
     onSubmit: handleSubmit
@@ -1365,12 +1367,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var redux_logger__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(redux_logger__WEBPACK_IMPORTED_MODULE_2__);
 
 
+ // add logger to applyMiddleware to see state in console
 
 
 
 var configureStore = function configureStore() {
   var preloadedState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  return (0,redux__WEBPACK_IMPORTED_MODULE_3__.createStore)(_reducers_root_reducer__WEBPACK_IMPORTED_MODULE_0__.default, preloadedState, (0,redux__WEBPACK_IMPORTED_MODULE_3__.applyMiddleware)(redux_thunk__WEBPACK_IMPORTED_MODULE_1__.default, (redux_logger__WEBPACK_IMPORTED_MODULE_2___default())));
+  return (0,redux__WEBPACK_IMPORTED_MODULE_3__.createStore)(_reducers_root_reducer__WEBPACK_IMPORTED_MODULE_0__.default, preloadedState, (0,redux__WEBPACK_IMPORTED_MODULE_3__.applyMiddleware)(redux_thunk__WEBPACK_IMPORTED_MODULE_1__.default));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (configureStore);
@@ -57085,7 +57088,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   ;
-  window.getState = store.getState;
   react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_root__WEBPACK_IMPORTED_MODULE_3__.default, {
     store: store
   }), root);
