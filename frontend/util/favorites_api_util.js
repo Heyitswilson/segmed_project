@@ -1,3 +1,5 @@
+// ajax connects to the backend routes
+
 export const createFavorite = (favorite) => (
     $.ajax({
         method: "POST",
