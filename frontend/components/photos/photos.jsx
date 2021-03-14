@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Row, Col, Container, Button, Form } from 'react-bootstrap';
 import PhotoContainer from '../photo/photo_container';
 
@@ -7,6 +8,14 @@ const Photos = (props) => {
         props.getAllPhotos();
         props.getAllFavorites(props.user);
     }, [])
+
+    const history = useHistory();
+
+    const handleLogout = (e) => {
+        e.preventDefault();
+        props.logout();
+        history.push('/login')
+    }
 
     const isFavorite = (photoID) => {
         // if a user's favorite photos includes the current photoID
@@ -24,7 +33,7 @@ const Photos = (props) => {
             }
             return (
                 <Row>
-                    <PhotoContainer photo={photo} />
+                    <PhotoContainer key={photo.id} photo={photo} />
                 </Row>
             )
             })
@@ -33,8 +42,10 @@ const Photos = (props) => {
 
     return (
         <Container>
-            Photos
             <ReturnPhotos/>
+            <Row className="d-flex justify-content-center">
+                <Button onClick={(e) => handleLogout(e)}>Logout</Button>
+            </Row>
         </Container>
     )
 }

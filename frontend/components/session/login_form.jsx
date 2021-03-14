@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { Row, Col, Container, Button, Form } from 'react-bootstrap';
 
 const LoginForm = (props) => {
     const [credentials, setCredentials] = useState({email: "", password: ""});
+    const history = useHistory();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        props.processForm(credentials);
+        props.login(credentials);
+        history.push('/');
     }
 
     const handleChange = (e) => {
@@ -21,48 +24,61 @@ const LoginForm = (props) => {
         })
     }
 
+    const demoLogin = (e) => {
+        e.preventDefault();
+        props.login({ email: "wilson@gmail.com", password: "password" });
+        history.push('/');
+    }
+
     return (
-        <Container>
+        <Container className="d-flex justify-content-center align-items-center session">
             <Row>
-                <Col>Login</Col>
-            </Row>
-            <Row>
-                <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="formEmail">
-                        <Form.Label>Email address</Form.Label>
-                        <Form.Control 
-                            name="email"
-                            type="email" 
-                            placeholder="Enter email"
-                            onChange={handleChange}
-                            value={credentials.email}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="formPassword">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control 
-                            name="password"
-                            type="password" 
-                            placeholder="Enter password"
-                            onChange={handleChange}
-                            value={credentials.password}
-                        />
-                    </Form.Group>
+                <Col>
                     <Row>
-                        <Col>
-                            <Button variant="primary" type="submit">
-                                Submit
-                            </Button>
-                        </Col>
-                        <Col>
-                            <Button variant="primary" type="submit">
-                                Sign up
-                            </Button>
-                        </Col>
+                        <Col className="d-flex justify-content-center">Login</Col>
                     </Row>
-                </Form>
+                    <Row>
+                        <Form onSubmit={handleSubmit}>
+                            <Form.Group controlId="formEmail">
+                                <Form.Control 
+                                    name="email"
+                                    type="email" 
+                                    placeholder="Enter email"
+                                    onChange={handleChange}
+                                    value={credentials.email}
+                                />
+                            </Form.Group>
+                            <Form.Group controlId="formPassword">
+                                <Form.Control 
+                                    name="password"
+                                    type="password" 
+                                    placeholder="Enter password"
+                                    onChange={handleChange}
+                                    value={credentials.password}
+                                />
+                            </Form.Group>
+                            <Row>
+                                <Col className="d-flex justify-content-start">
+                                    <Button variant="primary" type="submit">
+                                        Login
+                                    </Button>
+                                </Col>
+                                <Col className="d-flex justify-content-end">
+                                    <Button onClick={(e) => demoLogin(e)} variant="primary" type="submit">
+                                        Demo
+                                    </Button>
+                                </Col>
+                            </Row>
+                            <Row >
+                                <Col className="d-flex justify-content-center">
+                                    <Link to="/signup">To Signup</Link>
+                                </Col>
+                            </Row>
+                        </Form>
+                    </Row>
+                    <RenderErrors />
+                </Col>
             </Row>
-            <RenderErrors />
         </Container>
     )
 };

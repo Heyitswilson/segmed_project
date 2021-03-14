@@ -30,14 +30,16 @@ const Photo = (props) => {
     // decides button color
     let variantType = favorite ? "danger" : "secondary"; 
     return (
-        <Container>
+        <Container className="pb-4">
             <Row>
                 <Col>
                     <Image src={photo.photoUrl} fluid rounded/>
                 </Col>
             </Row>
-            <Row>
-                <Button onClick={(e) => handleClick(e)} variant={variantType}>Favorite</Button>
+            <Row className="pt-1">
+                <Col className="d-flex justify-content-center">
+                    <Button onClick={(e) => handleClick(e)} variant={variantType}>Favorite</Button>
+                </Col>
             </Row>
         </Container>
     )
