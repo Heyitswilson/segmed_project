@@ -26,11 +26,11 @@ Welcome to Segmed's image presentation coding project! The live demo, hosted on 
 1. Run "bundle install" and "npm install" to install dependencies.
 2. Run "rails db:setup" to set up database and seed data.
 3. Run "rails s" in one terminal to start server.
-4. Run "npm start" in another server to run webpack.
+4. Run "npm start" in another terminal to run webpack.
 5. Navigate to [local host](http://localhost:3000/#/) (http://localhost:3000/#/).
 
 ## Features
 
-* User accounts for customers (including a demo account for convenience)
-* Image favoriting that saves to a DB and persists after page refresh
+* Session controllers to manage user accounts
+* Favorite associations between photos and users to save a user's favorite photos
 * Debouncing to limit button clicks (prevents creating of duplicate entries in DB, prevents extra strain on backend and frontend)
