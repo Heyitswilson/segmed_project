@@ -16,15 +16,15 @@ link3 = open("https://segmed-dev.s3-us-west-1.amazonaws.com/p3.jpg")
 link2 = open("https://segmed-dev.s3-us-west-1.amazonaws.com/p2.jpg")
 link1 - open("https://segmed-dev.s3-us-west-1.amazonaws.com/p1.jpg")
 
-user1 = User.create({name: 'Wilson', email: 'wilson@gmail.com', password: 'password'})
+user1 = User.create!({name: 'Wilson', email: 'wilson@gmail.com', password: 'password'})
 
-photo4 = Photo.create()
-photo3 = Photo.create()
-photo2 = Photo.create()
-photo1 = Photo.create()
+photo4 = Photo.create!()
+photo3 = Photo.create!()
+photo2 = Photo.create!()
+photo1 = Photo.create!()
 
-favorite1 = Favorite.create({photo_id: 1, user_id: 1})
-favorite3 = Favorite.create({photo_id: 3, user_id: 1})
+favorite1 = Favorite.create!({photo_id: 1, user_id: 1})
+favorite3 = Favorite.create!({photo_id: 3, user_id: 1})
 
 
 photo4.photo.attach(io: link4, filename: 'p4.jpg')
