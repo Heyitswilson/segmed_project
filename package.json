@@ -32,7 +32,7 @@
   },
   "scripts": {
     "start": "webpack --watch --mode=development",
-    "postinstall": "webpack --mode=production"
+    "postinstall": "webpack"
   },
   "keywords": [],
   "author": "",
