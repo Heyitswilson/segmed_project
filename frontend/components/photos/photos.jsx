@@ -5,16 +5,21 @@ import PhotoContainer from '../photo/photo_container';
 
 const Photos = (props) => {
     useEffect(() => {
-        props.getAllPhotos();
-        props.getAllFavorites(props.user);
-    }, [])
+        if (Boolean(props.user)) {
+            props.getAllPhotos();
+            props.getAllFavorites(props.user);
+        } else {
+            history.push('/login');
+        };
+
+    }, [props.user])
 
     const history = useHistory();
 
     const handleLogout = (e) => {
         e.preventDefault();
         props.logout();
-        history.push('/login')
+        // history.push('/login');
     }
 
     const isFavorite = (photoID) => {
@@ -32,7 +37,7 @@ const Photos = (props) => {
                 photo.favorite = true;
             }
             return (
-                <Row>
+                <Row key={photo.id}>
                     <PhotoContainer key={photo.id} photo={photo} />
                 </Row>
             )

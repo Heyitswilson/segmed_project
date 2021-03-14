@@ -6,30 +6,36 @@ const SignupForm = (props) => {
     const [credentials, setCredentials] = useState({name: "", email: "", password: ""});
     const history = useHistory();
 
+    useEffect(() => {
+        if (props.loggedIn) history.push('/');
+    }, [props.loggedIn]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         props.signup(credentials);
-        history.push('/');
-    }
+    };
+
+    const demoLogin = (e) => {
+        e.preventDefault();
+        props.login({ email: "wilson@gmail.com", password: "password" });
+    };
 
     const handleChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value});
     };
-
+    
     const RenderErrors = () => {
         return props.errors.map((error, i) => {
             return (
-                <Row key={i}>{error}</Row>
+                <Row key={i}>
+                    <Col className="d-flex justify-content-center" key={i}>
+                        {error}
+                    </Col>
+                </Row>
             )
         })
-    }
-
-    const demoLogin = (e) => {
-        e.preventDefault();
-        props.login({ email: "wilson@gmail.com", password: "password" })
-        history.push('/');
-    }
-
+    };
+    
     return (
         <Container className="d-flex justify-content-center align-items-center session">
             <Row>
@@ -37,7 +43,7 @@ const SignupForm = (props) => {
                     <Row>
                         <Col className="d-flex justify-content-center">Sign up</Col>
                     </Row>
-                    <Row>
+                    <Row className="d-flex justify-content-center">
                         <Form onSubmit={handleSubmit}>
                             <Form.Group controlId="formName">
                                 <Form.Control 
