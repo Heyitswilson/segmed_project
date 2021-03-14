@@ -27,7 +27,7 @@ export const login = user => dispatch => {
         SessionAPIUtil.login(user)
             // .then(currentUser => console.log(currentUser))
             .then(currentUser => dispatch(receiveCurrentUser(currentUser)))
-            // .catch(err => dispatch(receiveSessionErrors(err.responseJSON)))
+            .catch(err => dispatch(receiveSessionErrors(err.responseJSON)))
     );
 };
 

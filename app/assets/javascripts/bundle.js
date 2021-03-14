@@ -103,6 +103,88 @@ function _setPrototypeOf(o, p) {
 
 /***/ }),
 
+/***/ "./frontend/actions/favorites_action.js":
+/*!**********************************************!*\
+  !*** ./frontend/actions/favorites_action.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "RECEIVE_FAVORITE": () => (/* binding */ RECEIVE_FAVORITE),
+/* harmony export */   "RECEIVE_FAVORITE_DELETE": () => (/* binding */ RECEIVE_FAVORITE_DELETE),
+/* harmony export */   "RECEIVE_ALL_FAVORITES": () => (/* binding */ RECEIVE_ALL_FAVORITES),
+/* harmony export */   "RECEIVE_FAVORITE_ERRORS": () => (/* binding */ RECEIVE_FAVORITE_ERRORS),
+/* harmony export */   "createFavorite": () => (/* binding */ createFavorite),
+/* harmony export */   "getAllFavorites": () => (/* binding */ getAllFavorites),
+/* harmony export */   "deleteFavorite": () => (/* binding */ deleteFavorite)
+/* harmony export */ });
+/* harmony import */ var _util_favorites_api_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/favorites_api_util */ "./frontend/util/favorites_api_util.js");
+
+var RECEIVE_FAVORITE = "RECEIVE_FAVORITE";
+var RECEIVE_FAVORITE_DELETE = "RECEIVE_FAVORITE_DELETE";
+var RECEIVE_ALL_FAVORITES = "RECEIVE_ALL_FAVORITES";
+var RECEIVE_FAVORITE_ERRORS = "RECEIVE_FAVORITE_ERRORS";
+
+var receiveFavorite = function receiveFavorite(favorite) {
+  return {
+    type: RECEIVE_FAVORITE,
+    favorite: favorite
+  };
+};
+
+var receiveAllFavorites = function receiveAllFavorites(favorites) {
+  return {
+    type: RECEIVE_ALL_FAVORITES,
+    favorites: favorites
+  };
+};
+
+var receiveFavoriteDelete = function receiveFavoriteDelete(photoId) {
+  return {
+    type: RECEIVE_FAVORITE_DELETE,
+    photoId: photoId
+  };
+};
+
+var receiveFavoriteErrors = function receiveFavoriteErrors(errors) {
+  return {
+    type: RECEIVE_FAVORITE_ERRORS,
+    errors: errors
+  };
+};
+
+var createFavorite = function createFavorite(favorite) {
+  return function (dispatch) {
+    _util_favorites_api_util__WEBPACK_IMPORTED_MODULE_0__.createFavorite(favorite).then(function (favorite) {
+      return dispatch(receiveFavorite(favorite));
+    })["catch"](function (errors) {
+      return dispatch(receiveFavoriteErrors(errors));
+    });
+  };
+};
+var getAllFavorites = function getAllFavorites(userId) {
+  return function (dispatch) {
+    _util_favorites_api_util__WEBPACK_IMPORTED_MODULE_0__.getAllFavorites(userId).then(function (favorites) {
+      return dispatch(receiveAllFavorites(favorites));
+    })["catch"](function (errors) {
+      return dispatch(receiveFavoriteErrors(errors));
+    });
+  };
+};
+var deleteFavorite = function deleteFavorite(favoriteId, photoId) {
+  return function (dispatch) {
+    _util_favorites_api_util__WEBPACK_IMPORTED_MODULE_0__.deleteFavorite(favoriteId).then(function () {
+      return dispatch(receiveFavoriteDelete(photoId));
+    })["catch"](function (errors) {
+      return dispatch(receiveFavoriteErrors(errors));
+    });
+  };
+};
+
+/***/ }),
+
 /***/ "./frontend/actions/photos_actions.js":
 /*!********************************************!*\
   !*** ./frontend/actions/photos_actions.js ***!
@@ -194,8 +276,9 @@ var login = function login(user) {
     return _util_session_api_util__WEBPACK_IMPORTED_MODULE_0__.login(user) // .then(currentUser => console.log(currentUser))
     .then(function (currentUser) {
       return dispatch(receiveCurrentUser(currentUser));
-    }) // .catch(err => dispatch(receiveSessionErrors(err.responseJSON)))
-    ;
+    })["catch"](function (err) {
+      return dispatch(receiveSessionErrors(err.responseJSON));
+    });
   };
 };
 var logout = function logout() {
@@ -285,28 +368,94 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var Photo = function Photo(_ref) {
-  var photo = _ref.photo;
-
+var Photo = function Photo(props) {
+  // state
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
       favorite = _useState2[0],
       setFavorite = _useState2[1];
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    // favorite status that is checked and set in the Photos component
     if (photo.favorite) setFavorite(true);
-  }, []);
+  }, []); // photo passed from Photos component
+
+  var photo = props.photo; // object linking a photo to a user
+
+  var favoriteAssociation = props.favorites[photo.id];
+
+  var handleClick = function handleClick(e) {
+    e.preventDefault();
+
+    if (favorite) {
+      props.deleteFavorite(favoriteAssociation.id, photo.id);
+      photo.favorite = false;
+      setFavorite(false);
+    } else {
+      props.createFavorite({
+        photo_id: photo.id,
+        user_id: props.user
+      });
+      photo.favorite = true;
+      setFavorite(true);
+    }
+  }; // decides button color
+
+
   var variantType = favorite ? "danger" : "secondary";
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__.default, {
     src: photo.photoUrl,
     fluid: true,
     rounded: true
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__.default, {
+    onClick: function onClick(e) {
+      return handleClick(e);
+    },
     variant: variantType
   }, "Favorite")));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Photo);
+
+/***/ }),
+
+/***/ "./frontend/components/photo/photo_container.js":
+/*!******************************************************!*\
+  !*** ./frontend/components/photo/photo_container.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _actions_favorites_action__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../actions/favorites_action */ "./frontend/actions/favorites_action.js");
+/* harmony import */ var _photo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./photo */ "./frontend/components/photo/photo.jsx");
+
+
+
+
+var mSTP = function mSTP(state) {
+  return {
+    user: state.session.id,
+    favorites: state.entities.favorites
+  };
+};
+
+var mDTP = function mDTP(dispatch) {
+  return {
+    createFavorite: function createFavorite(favorite) {
+      return dispatch((0,_actions_favorites_action__WEBPACK_IMPORTED_MODULE_1__.createFavorite)(favorite));
+    },
+    deleteFavorite: function deleteFavorite(favoriteId, photoId) {
+      return dispatch((0,_actions_favorites_action__WEBPACK_IMPORTED_MODULE_1__.deleteFavorite)(favoriteId, photoId));
+    }
+  };
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_0__.connect)(mSTP, mDTP)(_photo__WEBPACK_IMPORTED_MODULE_2__.default));
 
 /***/ }),
 
@@ -324,7 +473,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Row.js");
 /* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Container.js");
-/* harmony import */ var _photo_photo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../photo/photo */ "./frontend/components/photo/photo.jsx");
+/* harmony import */ var _photo_photo_container__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../photo/photo_container */ "./frontend/components/photo/photo_container.js");
 
 
 
@@ -332,10 +481,11 @@ __webpack_require__.r(__webpack_exports__);
 var Photos = function Photos(props) {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     props.getAllPhotos();
+    props.getAllFavorites(props.user);
   }, []);
 
   var isFavorite = function isFavorite(photoID) {
-    // call to backend and grab user's favorite photo_ids
+    // if a user's favorite photos includes the current photoID
     if (props.favorites[photoID]) return true;
     return false;
   };
@@ -345,10 +495,11 @@ var Photos = function Photos(props) {
     var photoArray = Object.values(photoObject);
     return photoArray.map(function (photo) {
       if (isFavorite(photo.id)) {
+        // mark favorite status so that a flag can be set in the Photo component
         photo.favorite = true;
       }
 
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_photo_photo__WEBPACK_IMPORTED_MODULE_1__.default, {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_photo_photo_container__WEBPACK_IMPORTED_MODULE_1__.default, {
         photo: photo
       }));
     });
@@ -374,17 +525,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _actions_photos_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../actions/photos_actions */ "./frontend/actions/photos_actions.js");
-/* harmony import */ var _photos__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./photos */ "./frontend/components/photos/photos.jsx");
+/* harmony import */ var _actions_favorites_action__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../actions/favorites_action */ "./frontend/actions/favorites_action.js");
+/* harmony import */ var _photos__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./photos */ "./frontend/components/photos/photos.jsx");
+
 
 
 
 
 var mSTP = function mSTP(state) {
-  // photos returns an object
-  var user = Object.values(state.entities.users)[0];
   return {
     photos: state.entities.photos,
-    favorites: user.favorites,
+    favorites: state.entities.favorites,
+    user: state.session.id,
     errors: state.errors.photos
   };
 };
@@ -392,21 +544,15 @@ var mSTP = function mSTP(state) {
 var mDTP = function mDTP(dispatch) {
   return {
     getAllPhotos: function getAllPhotos() {
-      dispatch((0,_actions_photos_actions__WEBPACK_IMPORTED_MODULE_1__.getAllPhotos)());
+      return dispatch((0,_actions_photos_actions__WEBPACK_IMPORTED_MODULE_1__.getAllPhotos)());
+    },
+    getAllFavorites: function getAllFavorites(userId) {
+      return dispatch((0,_actions_favorites_action__WEBPACK_IMPORTED_MODULE_2__.getAllFavorites)(userId));
     }
   };
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_0__.connect)(mSTP, mDTP)(_photos__WEBPACK_IMPORTED_MODULE_2__.default)); // create reducers first
-// map Index to props
-// need api_util to call ajax first
-// then need action creators to dispatch photos to state
-// need reducer to hold state
-// test rails Index method first
-// might need to seed database first
-// so set up aws?
-// 4 photos max
-// for tonight, let's set up login and signup
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_0__.connect)(mSTP, mDTP)(_photos__WEBPACK_IMPORTED_MODULE_3__.default));
 
 /***/ }),
 
@@ -775,16 +921,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var _users_reducer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./users_reducer */ "./frontend/reducers/users_reducer.js");
 /* harmony import */ var _photos_reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./photos_reducer */ "./frontend/reducers/photos_reducer.js");
+/* harmony import */ var _favorites_reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./favorites_reducer */ "./frontend/reducers/favorites_reducer.js");
+
 
 
  // modularizes reducers, holds entity reducers
 
-var entitiesReducer = (0,redux__WEBPACK_IMPORTED_MODULE_2__.combineReducers)({
+var entitiesReducer = (0,redux__WEBPACK_IMPORTED_MODULE_3__.combineReducers)({
   users: _users_reducer__WEBPACK_IMPORTED_MODULE_0__.default,
-  photos: _photos_reducer__WEBPACK_IMPORTED_MODULE_1__.default
+  photos: _photos_reducer__WEBPACK_IMPORTED_MODULE_1__.default,
+  favorites: _favorites_reducer__WEBPACK_IMPORTED_MODULE_2__.default
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (entitiesReducer);
 
@@ -801,18 +950,108 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var _session_errors_redeucer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./session_errors_redeucer */ "./frontend/reducers/session_errors_redeucer.js");
 /* harmony import */ var _photos_errors_reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./photos_errors_reducer */ "./frontend/reducers/photos_errors_reducer.js");
+/* harmony import */ var _favorites_errors_reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./favorites_errors_reducer */ "./frontend/reducers/favorites_errors_reducer.js");
+
 
 
  // modularize reducers, holds error reducers
 
-var errorsReducer = (0,redux__WEBPACK_IMPORTED_MODULE_2__.combineReducers)({
+var errorsReducer = (0,redux__WEBPACK_IMPORTED_MODULE_3__.combineReducers)({
   session: _session_errors_redeucer__WEBPACK_IMPORTED_MODULE_0__.default,
-  photos: _photos_errors_reducer__WEBPACK_IMPORTED_MODULE_1__.default
+  photos: _photos_errors_reducer__WEBPACK_IMPORTED_MODULE_1__.default,
+  favorites: _favorites_errors_reducer__WEBPACK_IMPORTED_MODULE_2__.default
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (errorsReducer);
+
+/***/ }),
+
+/***/ "./frontend/reducers/favorites_errors_reducer.js":
+/*!*******************************************************!*\
+  !*** ./frontend/reducers/favorites_errors_reducer.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _actions_favorites_action__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/favorites_action */ "./frontend/actions/favorites_action.js");
+
+
+var favoritesErrorsReducer = function favoritesErrorsReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+  Object.freeze(state);
+
+  switch (action.type) {
+    case _actions_favorites_action__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_FAVORITE_ERRORS:
+      return action.errors;
+
+    case _actions_favorites_action__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_FAVORITE:
+      return {};
+
+    case _actions_favorites_action__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_FAVORITE_DELETE:
+      return {};
+
+    case _actions_favorites_action__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_ALL_FAVORITES:
+      return {};
+
+    default:
+      return state;
+  }
+
+  ;
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (favoritesErrorsReducer);
+
+/***/ }),
+
+/***/ "./frontend/reducers/favorites_reducer.js":
+/*!************************************************!*\
+  !*** ./frontend/reducers/favorites_reducer.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _actions_favorites_action__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/favorites_action */ "./frontend/actions/favorites_action.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var favoritesReducer = function favoritesReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+  Object.freeze(state);
+
+  switch (action.type) {
+    case _actions_favorites_action__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_ALL_FAVORITES:
+      return action.favorites;
+
+    case _actions_favorites_action__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_FAVORITE:
+      return Object.assign({}, state, _defineProperty({}, action.favorite.photo_id, action.favorite));
+
+    case _actions_favorites_action__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_FAVORITE_DELETE:
+      var newState = Object.assign({}, state);
+      delete newState[action.photoId];
+      return newState;
+
+    default:
+      return state;
+  }
+
+  ;
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (favoritesReducer);
 
 /***/ }),
 
@@ -896,14 +1135,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var _entities_reducer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./entities_reducer */ "./frontend/reducers/entities_reducer.js");
 /* harmony import */ var _errors_reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./errors_reducer */ "./frontend/reducers/errors_reducer.js");
+/* harmony import */ var _session_reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./session_reducer */ "./frontend/reducers/session_reducer.js");
 
 
 
-var rootReducer = (0,redux__WEBPACK_IMPORTED_MODULE_2__.combineReducers)({
+
+var rootReducer = (0,redux__WEBPACK_IMPORTED_MODULE_3__.combineReducers)({
   entities: _entities_reducer__WEBPACK_IMPORTED_MODULE_0__.default,
+  session: _session_reducer__WEBPACK_IMPORTED_MODULE_2__.default,
   errors: _errors_reducer__WEBPACK_IMPORTED_MODULE_1__.default
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (rootReducer);
@@ -944,6 +1186,47 @@ var sessionErrorsReducer = function sessionErrorsReducer() {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (sessionErrorsReducer);
+
+/***/ }),
+
+/***/ "./frontend/reducers/session_reducer.js":
+/*!**********************************************!*\
+  !*** ./frontend/reducers/session_reducer.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _actions_session_actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/session_actions */ "./frontend/actions/session_actions.js");
+ // track session state
+
+var sessionReducer = function sessionReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    id: null
+  };
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+  Object.freeze(state);
+
+  switch (action.type) {
+    case _actions_session_actions__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_CURRENT_USER:
+      return {
+        id: action.currentUser.id
+      };
+
+    case _actions_session_actions__WEBPACK_IMPORTED_MODULE_0__.LOGOUT_CURRENT_USER:
+      return {
+        id: null
+      };
+
+    default:
+      return state;
+  }
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (sessionReducer);
 
 /***/ }),
 
@@ -1008,6 +1291,43 @@ var configureStore = function configureStore() {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (configureStore);
+
+/***/ }),
+
+/***/ "./frontend/util/favorites_api_util.js":
+/*!*********************************************!*\
+  !*** ./frontend/util/favorites_api_util.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "createFavorite": () => (/* binding */ createFavorite),
+/* harmony export */   "getAllFavorites": () => (/* binding */ getAllFavorites),
+/* harmony export */   "deleteFavorite": () => (/* binding */ deleteFavorite)
+/* harmony export */ });
+var createFavorite = function createFavorite(favorite) {
+  return $.ajax({
+    method: "POST",
+    url: "/api/favorites",
+    data: {
+      favorite: favorite
+    }
+  });
+};
+var getAllFavorites = function getAllFavorites(userId) {
+  return $.ajax({
+    method: "GET",
+    url: "/api/favorites/".concat(userId)
+  });
+};
+var deleteFavorite = function deleteFavorite(id) {
+  return $.ajax({
+    method: "DELETE",
+    url: "/api/favorites/".concat(id)
+  });
+};
 
 /***/ }),
 
@@ -39433,6 +39753,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./store/store */ "./frontend/store/store.js");
 /* harmony import */ var _components_root__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/root */ "./frontend/components/root.jsx");
 /* harmony import */ var _util_photos_api_util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./util/photos_api_util */ "./frontend/util/photos_api_util.js");
+/* harmony import */ var _util_favorites_api_util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./util/favorites_api_util */ "./frontend/util/favorites_api_util.js");
+
 
 
 
@@ -39444,6 +39766,7 @@ document.addEventListener('DOMContentLoaded', function () {
   window.getState = store.getState;
   window.dispatch = store.dispatch;
   window.getAllPhotos = _util_photos_api_util__WEBPACK_IMPORTED_MODULE_4__.getAllPhotos;
+  window.getAllFavorites = _util_favorites_api_util__WEBPACK_IMPORTED_MODULE_5__.getAllFavorites;
   react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_root__WEBPACK_IMPORTED_MODULE_3__.default, {
     store: store
   }), root);

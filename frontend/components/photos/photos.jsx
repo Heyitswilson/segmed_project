@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Container, Button, Form } from 'react-bootstrap';
-import Photo from '../photo/photo';
+import PhotoContainer from '../photo/photo_container';
 
 const Photos = (props) => {
     useEffect(() => {
         props.getAllPhotos();
+        props.getAllFavorites(props.user);
     }, [])
 
     const isFavorite = (photoID) => {
-        // call to backend and grab user's favorite photo_ids
+        // if a user's favorite photos includes the current photoID
         if (props.favorites[photoID]) return true;
         return false;
     }
@@ -18,13 +19,12 @@ const Photos = (props) => {
         let photoArray = Object.values(photoObject);
         return (photoArray.map(photo => {
             if (isFavorite(photo.id)) {
+                // mark favorite status so that a flag can be set in the Photo component
                 photo.favorite = true;
             }
             return (
                 <Row>
-                    <Photo photo={photo} />
-                    {/* Single photo
-                    <img src={photo.photoUrl}></img> */}
+                    <PhotoContainer photo={photo} />
                 </Row>
             )
             })
