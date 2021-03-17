@@ -4,9 +4,6 @@
 
 Welcome to Segmed's image presentation coding project!
 
-![Segmed Photo](https://segmed-dev.s3-us-west-1.amazonaws.com/personal-site/display.png)
-
-
 ## Tech stack
 
 * Ruby on Rails
