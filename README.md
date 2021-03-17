@@ -4,7 +4,7 @@
 
 Welcome to Segmed's image presentation coding project!
 
-![Toasty Homepage](https://segmed-dev.s3-us-west-1.amazonaws.com/personal-site/display.png)
+![Segmed Photo](https://segmed-dev.s3-us-west-1.amazonaws.com/personal-site/display.png)
 
 
 ## Tech stack
