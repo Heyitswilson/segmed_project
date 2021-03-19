@@ -31,8 +31,7 @@
     "npm": "7.0.14"
   },
   "scripts": {
-    "start": "webpack --watch --mode=development",
-    "postinstall": "webpack"
+    "start": "webpack --watch --mode=development"
   },
   "keywords": [],
   "author": "",

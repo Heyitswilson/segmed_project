@@ -6,6 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+# seed process takes at least 3 minutes
 require 'open-uri'
 Favorite.delete_all
 Photo.delete_all
@@ -24,9 +25,13 @@ photo2 = Photo.create!({})
 photo1 = Photo.create!({})
 
 photo4.image.attach(io: link4, filename: 'p4.jpg')
+puts photo4.image.attached?()
 photo3.image.attach(io: link3, filename: 'p3.jpg')
+puts photo3.image.attached?()
 photo2.image.attach(io: link2, filename: 'p2.jpg')
+puts photo2.image.attached?()
 photo1.image.attach(io: link1, filename: 'p1.jpg')
+puts photo1.image.attached?()
 
 favorite1 = Favorite.create!({photo_id: photo4.id, user_id: user1.id})
 favorite3 = Favorite.create!({photo_id: photo1.id, user_id: user1.id})
