@@ -20,4 +20,3 @@ export const getAllPhotos = () => dispatch => {
             .catch(errors => dispatch(receivePhotoErrors(errors)))
     )
 };
-
