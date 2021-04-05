@@ -3,6 +3,7 @@ import * as SessionAPIUtil from '../util/session_api_util';
 export const RECEIVE_CURRENT_USER = "RECEIVE_CURRENT_USER";
 export const LOGOUT_CURRENT_USER = "LOGOUT_CURRENT_USER";
 export const RECEIVE_SESSION_ERRORS = "RECEIVE_SESSION_ERRORS";
+export const CLEAR_SESSION_ERRORS = 'CLEAR_SESSION_ERRORS';
 
 const receiveCurrentUser = (currentUser => {
     return ({
@@ -22,10 +23,13 @@ const receiveSessionErrors = (errors => {
     });
 });
 
+const receiveClearSessionErrors = () => ({
+    type: CLEAR_SESSION_ERRORS
+});
+
 export const login = user => dispatch => {
     return (
         SessionAPIUtil.login(user)
-            // .then(currentUser => console.log(currentUser))
             .then(currentUser => dispatch(receiveCurrentUser(currentUser)))
             .catch(err => dispatch(receiveSessionErrors(err.responseJSON)))
     );
@@ -45,3 +49,7 @@ export const signup = (user) => dispatch => {
         .catch(err => dispatch(receiveSessionErrors(err.responseJSON)))
     )
 };
+
+export const clearSessionErrors = () => dispatch => (
+    dispatch(receiveClearSessionErrors())
+);

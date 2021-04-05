@@ -86,7 +86,7 @@ const SignupForm = (props) => {
                             </Row>
                             <Row >
                                 <Col className="d-flex justify-content-center">
-                                    <Link to="/login">To Login</Link>
+                                    <Link onClick={() => props.clearSessionErrors()} to="/login">To Login</Link>
                                 </Col>
                             </Row>
                         </Form>
