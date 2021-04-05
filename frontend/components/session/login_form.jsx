@@ -41,7 +41,7 @@ const LoginForm = (props) => {
             <Row>
                 <Col>
                     <Row>
-                        <Col className="d-flex justify-content-center">Log In to Rocky Photos</Col>
+                        <Col className="d-flex justify-content-center">Log In to Segmed Photos</Col>
                     </Row>
                     <Row className="d-flex justify-content-center">
                         <Form onSubmit={handleSubmit}>
