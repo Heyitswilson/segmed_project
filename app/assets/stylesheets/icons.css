@@ -1,7 +1,6 @@
 .link-icons {
     height: 28px;
     width: 28px;
-    /* padding: 10px; */
     outline: none;
 }
 
@@ -9,6 +8,4 @@
     position: relative;
     bottom: 5px;
 }
-
-
 

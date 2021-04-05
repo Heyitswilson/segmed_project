@@ -3,13 +3,10 @@ import React from 'react';
 
 const Footer = () => {
     return (
-        <Navbar bg="primary" variant="light">
-            <Nav className="footer">
+        <Navbar className="" bg="primary" variant="light">
+            <Nav className="footer justify-content-center d-flex">
                 <Row className="d-flex justify-content-center footer">
-                    <Col className="title d-flex justify-content-end">
-                        Segmed Photos
-                    </Col>
-                    <Col className="d-flex justify-content-center">
+                    <Col className="d-flex justify-content-end">
                         <a href="https://www.linkedin.com/in/wilson-ngu/" target="_blank">
                             <img className="link-icons" src="https://segmed-dev.s3-us-west-1.amazonaws.com/social/whiteLinkedIn.png"/>
                         </a>
