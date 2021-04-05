@@ -542,7 +542,7 @@ var Footer = function Footer() {
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__.default, {
     className: "d-flex justify-content-start"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
-    href: "https://github.com/Heyitswilson/Toasty-fullstack",
+    href: "https://github.com/Heyitswilson/segmed_project",
     target: "_blank"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
     className: "link-icons",
