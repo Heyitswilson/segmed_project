@@ -12,14 +12,22 @@ const Photos = (props) => {
             history.push('/login');
         };
 
-    }, [props.user])
+    }, [props.user]);
 
     const history = useHistory();
 
     const handleLogout = (e) => {
         e.preventDefault();
         props.logout();
-    }
+    };
+
+    const LoadingDisplay = () => {
+        return (
+            <Container className="loading p-2 d-flex justify-content-center align-items-center">
+                Loading . . . 
+            </Container>
+        );
+    };
 
     const isFavorite = (photoID) => {
         // if a user's favorite photos includes the current photoID
@@ -39,19 +47,21 @@ const Photos = (props) => {
                 <Row key={photo.id}>
                     <PhotoContainer key={photo.id} photo={photo} />
                 </Row>
-            )
-            })
+            );
+        }))
+    }
+    if (props.loading) {
+        return <LoadingDisplay/>;
+    } else {
+        return (
+            <Container className="p-2">
+                <ReturnPhotos/>
+                <Row className="d-flex justify-content-center">
+                    <Button onClick={(e) => handleLogout(e)}>Log Out</Button>
+                </Row>
+            </Container>
         )
     }
-
-    return (
-        <Container className="p-2">
-            <ReturnPhotos/>
-            <Row className="d-flex justify-content-center">
-                <Button onClick={(e) => handleLogout(e)}>Log Out</Button>
-            </Row>
-        </Container>
-    )
 }
 
 export default Photos;

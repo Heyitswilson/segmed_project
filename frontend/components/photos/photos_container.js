@@ -9,7 +9,8 @@ const mSTP = state => {
         photos: state.entities.photos,
         favorites: state.entities.favorites,
         user: state.session.id,
-        errors: state.errors.photos
+        errors: state.errors.photos,
+        loading: state.loading
     }
 };
 
